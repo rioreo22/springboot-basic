@@ -2,6 +2,7 @@ package org.prgrms.vouchermanager.wallet;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.prgrms.vouchermanager.domain.wallet.domain.Wallet;
 
 import java.util.UUID;
 

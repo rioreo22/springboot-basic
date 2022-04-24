@@ -2,6 +2,7 @@ package org.prgrms.vouchermanager.voucher.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.prgrms.vouchermanager.domain.voucher.domain.FixedAmountVoucher;
 
 import java.util.UUID;
 
