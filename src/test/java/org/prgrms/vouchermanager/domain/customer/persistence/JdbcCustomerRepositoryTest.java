@@ -1,18 +1,15 @@
 package org.prgrms.vouchermanager.domain.customer.persistence;
 
-import com.zaxxer.hikari.HikariDataSource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.prgrms.vouchermanager.JdbcTestConfig;
 import org.prgrms.vouchermanager.domain.customer.domain.Customer;
 import org.prgrms.vouchermanager.domain.customer.domain.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -21,7 +18,8 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringJUnitConfig
+@ExtendWith({SpringExtension.class})
+@ContextConfiguration(classes = {JdbcTestConfig.class})
 class JdbcCustomerRepositoryTest {
 
     @Autowired
@@ -120,25 +118,5 @@ class JdbcCustomerRepositoryTest {
         customerJdbcRepository.deleteAll();
 
         assertThat(customerJdbcRepository.findAll()).containsAll(List.of());
-    }
-
-    @Configuration
-    @ComponentScan(basePackages = {"org.prgrms.vouchermanager.domain.customer"})
-    static class Config {
-
-        @Bean
-        public DataSource dataSource() {
-            return DataSourceBuilder.create()
-                    .url("jdbc:mysql://localhost/test_order_mgmt")
-                    .username("root")
-                    .password("1234")
-                    .type(HikariDataSource.class)
-                    .build();
-        }
-
-        @Bean
-        public JdbcTemplate jdbcTemplate(DataSource dataSource) {
-            return new JdbcTemplate(dataSource);
-        }
     }
 }

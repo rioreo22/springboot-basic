@@ -1,19 +1,16 @@
 package org.prgrms.vouchermanager.domain.product.persistence;
 
-import com.zaxxer.hikari.HikariDataSource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.prgrms.vouchermanager.JdbcTestConfig;
 import org.prgrms.vouchermanager.domain.product.domain.Product;
 import org.prgrms.vouchermanager.domain.product.domain.ProductRepository;
 import org.prgrms.vouchermanager.domain.product.domain.ProductStatus;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
@@ -24,7 +21,8 @@ import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringJUnitConfig
+@ExtendWith({SpringExtension.class})
+@ContextConfiguration(classes = {JdbcTestConfig.class})
 class JdbcProductRepositoryTest {
 
     @Autowired
@@ -118,25 +116,5 @@ class JdbcProductRepositoryTest {
         List<Product> found = productRepository.findAll();
 
         assertThat(found.size()).isEqualTo(0);
-    }
-
-    @Configuration
-    @ComponentScan(basePackages = {"org.prgrms.vouchermanager.domain.product"})
-    static class Config {
-
-        @Bean
-        public DataSource dataSource() {
-            return DataSourceBuilder.create()
-                    .url("jdbc:mysql://localhost/test_order_mgmt")
-                    .username("root")
-                    .password("1234")
-                    .type(HikariDataSource.class)
-                    .build();
-        }
-
-        @Bean
-        public JdbcTemplate jdbcTemplate(DataSource dataSource) {
-            return new JdbcTemplate(dataSource);
-        }
     }
 }
