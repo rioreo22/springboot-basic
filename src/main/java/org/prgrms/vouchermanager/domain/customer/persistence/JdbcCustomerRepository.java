@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.base.Preconditions.checkArgument;
 
 @Repository
 public class JdbcCustomerRepository implements CustomerRepository {
@@ -52,7 +52,7 @@ public class JdbcCustomerRepository implements CustomerRepository {
                 customer.getEmail(),
                 Timestamp.valueOf(customer.getCreateAt()));
 
-        checkState(theNumberOfRowsAffected == 1, "잘못된 삽입입니다.");
+        checkArgument(theNumberOfRowsAffected == 1, "잘못된 삽입입니다.");
         return customer;
     }
 
@@ -64,7 +64,7 @@ public class JdbcCustomerRepository implements CustomerRepository {
                 customer.getId().toString().getBytes()
         );
 
-        checkState(theNumberOfRowsAffected == 1, MessageFormat.format("Customer: {0} 업데이트 실패", customer));
+        checkArgument(theNumberOfRowsAffected == 1, MessageFormat.format("Customer: {0} 업데이트 실패", customer));
         return customer;
     }
 

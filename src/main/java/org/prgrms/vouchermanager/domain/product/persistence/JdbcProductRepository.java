@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.base.Preconditions.checkArgument;
 
 @Repository
 public class JdbcProductRepository implements ProductRepository {
@@ -56,7 +56,7 @@ public class JdbcProductRepository implements ProductRepository {
                 product.getStatus().toString(),
                 Timestamp.valueOf(product.getCreatedAt()));
 
-        checkState(theNumberOfRowsAffected == 1, "잘못된 삽입입니다.");
+        checkArgument(theNumberOfRowsAffected == 1, "잘못된 삽입입니다.");
         return product;
     }
 
