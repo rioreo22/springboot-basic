@@ -37,10 +37,9 @@ public class JdbcProductRepository implements ProductRepository {
         UUID id = UUIDBytesToUUID(resultSet.getBytes("product_id"));
         String name = resultSet.getString("name");
         long price = resultSet.getLong("price");
-        long stock = resultSet.getLong("stock");
         ProductStatus status = ProductStatus.valueOf(resultSet.getString("status"));
         LocalDateTime createdAt = resultSet.getTimestamp("created_at").toLocalDateTime();
-        return Product.bind(id, name, price, stock, status, createdAt);
+        return Product.bind(id, name, price, status, createdAt);
     };
 
     private UUID UUIDBytesToUUID(byte[] customer_id) {
@@ -50,11 +49,10 @@ public class JdbcProductRepository implements ProductRepository {
 
     @Override
     public Product insert(Product product) {
-        int theNumberOfRowsAffected = jdbcTemplate.update("INSERT INTO products(product_id, name, price, stock, status, created_at) VALUES (UUID_TO_BIN(?), ?, ?, ?, ?, ?)",
+        int theNumberOfRowsAffected = jdbcTemplate.update("INSERT INTO products(product_id, name, price, status, created_at) VALUES (UUID_TO_BIN(?), ?, ?, ?, ?)",
                 product.getId().toString().getBytes(),
                 product.getName(),
                 product.getPrice(),
-                product.getStock(),
                 product.getStatus().toString(),
                 Timestamp.valueOf(product.getCreatedAt()));
 

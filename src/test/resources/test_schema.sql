@@ -27,7 +27,6 @@ CREATE TABLE products
     product_id BINARY(16) PRIMARY KEY,
     name       VARCHAR(20) NOT NULL,
     price      INT         NOT NULL,
-    stock      INT         NOT NULL,
     status     VARCHAR(20)  NOT NULL,
     created_at DATETIME(6) NOT NULL
 );

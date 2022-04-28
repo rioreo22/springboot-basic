@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.prgrms.vouchermanager.domain.product.domain.Product;
 import org.prgrms.vouchermanager.domain.product.domain.ProductRepository;
+import org.prgrms.vouchermanager.domain.product.domain.ProductStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
@@ -40,7 +41,6 @@ class JdbcProductRepositoryTest {
         assertThat(actual.getId()).isEqualTo(expected.getId());
         assertThat(actual.getName()).isEqualTo(expected.getName());
         assertThat(actual.getPrice()).isEqualTo(expected.getPrice());
-        assertThat(actual.getStock()).isEqualTo(expected.getStock());
         assertThat(actual.getStatus()).isEqualTo(expected.getStatus());
         assertThat(actual.getCreatedAt()).isEqualTo(expected.getCreatedAt());
     }
@@ -53,7 +53,7 @@ class JdbcProductRepositoryTest {
     @Test
     @DisplayName("insert 할 수 있다")
     void insert() {
-        Product product = Product.create("tea", 1000, 10);
+        Product product = Product.create("tea", 1000, ProductStatus.FOR_SALE);
 
         productRepository.insert(product);
         Product foundProduct = productRepository.findById(product.getId()).get();
@@ -64,7 +64,7 @@ class JdbcProductRepositoryTest {
     @Test
     @DisplayName("id로 Product를 조회할 수 있다")
     void findById() {
-        Product product = Product.create("iceCream", 500, 1000);
+        Product product = Product.create("iceCream", 500, ProductStatus.FOR_SALE);
         UUID id = product.getId();
         productRepository.insert(product);
 
@@ -76,7 +76,7 @@ class JdbcProductRepositoryTest {
     @Test
     @DisplayName("name으로 조회할 수 있다.")
     void findByName() {
-        Product product = Product.create("coffeeBean", 5000, 10);
+        Product product = Product.create("coffeeBean", 5000, ProductStatus.FOR_SALE);
         String name = product.getName();
         productRepository.insert(product);
 
@@ -89,7 +89,7 @@ class JdbcProductRepositoryTest {
     @DisplayName("저장된 모든 Product를 조회할 수 있다.")
     void findAll() {
         List<Product> productList = new ArrayList<>();
-        IntStream.range(1, 10).forEach(i -> productList.add(productRepository.insert(Product.create("name" + i, i, i))));
+        IntStream.range(1, 10).forEach(i -> productList.add(productRepository.insert(Product.create("name" + i, i, ProductStatus.FOR_SALE))));
 
         List<Product> found = productRepository.findAll();
 
@@ -100,7 +100,7 @@ class JdbcProductRepositoryTest {
     @Test
     @DisplayName("삭제할 수 있다.")
     void delete() {
-        Product product = Product.create("tea", 1000, 10);
+        Product product = Product.create("tea", 1000, ProductStatus.FOR_SALE);
         productRepository.insert(product);
 
         productRepository.delete(product);
@@ -112,8 +112,7 @@ class JdbcProductRepositoryTest {
     @Test
     @DisplayName("products 테이블의 모든 테이더를 삭제할 수 있다.")
     void deleteAll() {
-        List<Product> productList = new ArrayList<>();
-        IntStream.range(1, 10).forEach(i -> productList.add(productRepository.insert(Product.create("name" + i, i, i))));
+        IntStream.range(1, 10).forEach(i -> productRepository.insert(Product.create("name" + i, i, ProductStatus.FOR_SALE)));
 
         productRepository.deleteAll();
         List<Product> found = productRepository.findAll();
