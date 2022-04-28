@@ -9,7 +9,7 @@ public interface ProductRepository {
 
     Optional<Product> findById(UUID id);
 
-    Optional<Product> findByName(String name);
+    List<Product> findByName(String name);
 
     List<Product> findAll();
 

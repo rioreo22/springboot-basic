@@ -74,13 +74,15 @@ class JdbcProductRepositoryTest {
     @Test
     @DisplayName("name으로 조회할 수 있다.")
     void findByName() {
-        Product product = Product.create("coffeeBean", 5000, ProductStatus.FOR_SALE);
-        String name = product.getName();
-        productRepository.insert(product);
+        String name = "coffeeBean";
+        List<Product> sameNameProducts = List.of(
+                productRepository.insert(Product.create(name, 5000, ProductStatus.FOR_SALE)),
+                productRepository.insert(Product.create(name, 10000, ProductStatus.SOLD_OUT))
+        );
 
-        Product foundProduct = productRepository.findByName(name).get();
+        List<Product> foundProducts = productRepository.findByName(name);
 
-        compareProduct(foundProduct, product);
+        assertThat(foundProducts).containsAll(sameNameProducts);
     }
 
     @Test

@@ -73,14 +73,14 @@ public class JdbcProductRepository implements ProductRepository {
     }
 
     @Override
-    public Optional<Product> findByName(String name) {
+    public List<Product> findByName(String name) {
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM products WHERE name = ?",
+            return jdbcTemplate.query("SELECT * FROM products WHERE name = ?",
                     productRowMapper,
-                    name));
+                    name);
         } catch (EmptyResultDataAccessException e) {
             log.error(MessageFormat.format("Product findByName: {0} 반환 결과가 1개 행이 아닙니다.", name));
-            return Optional.empty();
+            return List.of();
         }
     }
 
