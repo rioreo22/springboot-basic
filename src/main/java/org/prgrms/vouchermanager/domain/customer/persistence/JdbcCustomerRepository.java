@@ -80,20 +80,20 @@ public class JdbcCustomerRepository implements CustomerRepository {
                     customerRowMapper,
                     customerId.toString().getBytes()));
         } catch (EmptyResultDataAccessException e) {
-            log.error(MessageFormat.format("findById: {0} 반환 결과가 1개 행이 아닙니다.", customerId));
+            log.error("Customer - findById id : %s가 존재하지 않음".formatted(customerId));
             return Optional.empty();
         }
     }
 
     @Override
-    public Optional<Customer> findByName(String name) {
+    public List<Customer> findByName(String name) {
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM customers WHERE name = ?",
+            return jdbcTemplate.query("SELECT * FROM customers WHERE name = ?",
                     customerRowMapper,
-                    name));
+                    name);
         } catch (EmptyResultDataAccessException e) {
-            log.error(MessageFormat.format("findByName: {0} 반환 결과가 1개 행이 아닙니다.", name));
-            return Optional.empty();
+            log.error("Customer - findByName name : %s가 존재하지 않음".formatted(name));
+            return List.of();
         }
     }
 
@@ -104,7 +104,7 @@ public class JdbcCustomerRepository implements CustomerRepository {
                     customerRowMapper,
                     email));
         } catch (EmptyResultDataAccessException e) {
-            log.error(MessageFormat.format("findByEmail: {0} 반환 결과가 1개 행이 아닙니다.", email));
+            log.error("Customer - findByEmail email : %s가 존재하지 않음".formatted(email));
             return Optional.empty();
         }
     }

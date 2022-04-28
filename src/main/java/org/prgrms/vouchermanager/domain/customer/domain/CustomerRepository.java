@@ -14,7 +14,7 @@ public interface CustomerRepository {
 
     Optional<Customer> findById(UUID customerId);
 
-    Optional<Customer> findByName(String name);
+     List<Customer> findByName(String name);
 
     Optional<Customer> findByEmail(String email);
 

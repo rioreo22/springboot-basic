@@ -1,4 +1,4 @@
-create database order_mgmt;
+# create database order_mgmt;
 
 use order_mgmt;
 
@@ -12,8 +12,7 @@ CREATE TABLE customers
     name        VARCHAR(20) NOT NULL,
     email       VARCHAR(50) NOT NULL,
     created_at  DATETIME(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-    CONSTRAINT unq_user_email UNIQUE (email),
-    CONSTRAINT unq_user_name UNIQUE (name)
+    CONSTRAINT unq_user_email UNIQUE (email)
 );
 
 CREATE TABLE vouchers

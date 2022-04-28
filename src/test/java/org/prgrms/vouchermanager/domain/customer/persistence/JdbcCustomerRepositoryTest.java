@@ -65,12 +65,15 @@ class JdbcCustomerRepositoryTest {
     @Test
     @DisplayName("고객을 name으로 조회할 수 있다")
     void findByName_name으로_조회할_수_있다() {
-        Customer customer = Customer.create("customer03", "testEmail04@email.com");
-        customerJdbcRepository.insert(customer);
+        List<Customer> sameNameCustomers = List.of(
+                customerJdbcRepository.insert(Customer.create("customer03", "testEmail04@email.com")),
+                customerJdbcRepository.insert(Customer.create("customer03", "testEmail15@email.com")),
+                customerJdbcRepository.insert(Customer.create("customer03", "testEmail16@email.com"))
+        );
 
-        Customer findCustomer = customerJdbcRepository.findByName(customer.getName()).get();
+        List<Customer> foundCustomers = customerJdbcRepository.findByName("customer03");
 
-        assertThat(findCustomer).isEqualTo(customer);
+        assertThat(foundCustomers).containsAll(sameNameCustomers);
     }
 
     @Test
