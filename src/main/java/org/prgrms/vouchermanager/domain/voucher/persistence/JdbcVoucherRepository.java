@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 /**
  * 위클리미션 목록 중 JdbcVoucherRepository 구현 입니다
  */
@@ -71,9 +73,8 @@ public class JdbcVoucherRepository implements VoucherRepository {
         } catch (DuplicateKeyException e) {
             throw new IllegalArgumentException("이미 존재하는 voucherId입니다.");
         }
-        if (theNumberOfRowAffected != 1) {
-            throw new IllegalArgumentException("잘못된 삽입입니다.");
-        }
+
+        checkArgument(theNumberOfRowAffected == 1, "잘못된 삽입입니다.");
         return voucher;
     }
 

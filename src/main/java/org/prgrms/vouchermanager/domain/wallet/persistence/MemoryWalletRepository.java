@@ -12,7 +12,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
 
 /**
  * Wallet은 인메모리 리포지토리로 작성하였습니다.
@@ -24,7 +23,7 @@ public class MemoryWalletRepository implements WalletRepository {
 
     @Override
     public void insert(Wallet wallet) {
-        checkState(storage.get(wallet.getId()) == null, "이미 존재하는 Wallet 입니다.");
+        checkNotNull(storage.get(wallet.getId()), "이미 존재하는 Wallet 입니다.");
         storage.put(wallet.getId(), wallet);
     }
 
