@@ -29,13 +29,23 @@ public class MemoryWalletRepository implements WalletRepository {
     }
 
     @Override
+    public Optional<Wallet> findById(UUID id) {
+        return Optional.ofNullable(storage.get(id));
+    }
+
+    @Override
     public List<Wallet> findByCustomerId(UUID customerId) {
         return storage.values().stream().filter(wallet -> wallet.getCustomerId().equals(customerId)).collect(Collectors.toList());
     }
 
     @Override
-    public Optional<Wallet> findByVoucherId(UUID voucherId) {
-        return storage.values().stream().filter(wallet -> wallet.getVoucherId().equals(voucherId)).findFirst();
+    public List<Wallet> findByVoucherId(UUID voucherId) {
+        return storage.values().stream().filter(wallet -> wallet.getVoucherId().equals(voucherId)).collect(Collectors.toList());
+    }
+
+    @Override
+    public Optional<Wallet> findByCustomerIdAndVoucherId(UUID customerId, UUID voucherId) {
+        return findByCustomerId(customerId).stream().filter(wallet -> wallet.getVoucherId().equals(voucherId)).findFirst();
     }
 
     @Override
@@ -46,7 +56,12 @@ public class MemoryWalletRepository implements WalletRepository {
 
     @Override
     public void deleteByVoucherId(UUID voucherId) {
-        delete(findByVoucherId(voucherId).orElseThrow(() -> new IllegalArgumentException("삭제할 wallet이 존재하지 않습니다.")));
+        findByVoucherId(voucherId).forEach(this::delete);
+    }
+
+    @Override
+    public void update(Wallet wallet) {
+        storage.put(wallet.getId(), wallet);
     }
 
 }

@@ -18,11 +18,18 @@ public class Wallet {
     /* Customer 아이디 */
     private final UUID customerId;
 
+    /* 지갑 상태 */
+    private WalletStatus walletStatus = WalletStatus.USABLE;
+
     public Wallet(UUID customerId, UUID voucherId) {
         checkNotNull(customerId);
         checkNotNull(voucherId);
 
         this.customerId = customerId;
         this.voucherId = voucherId;
+    }
+
+    public void useWallet() {
+        this.walletStatus = WalletStatus.UNUSABLE;
     }
 }

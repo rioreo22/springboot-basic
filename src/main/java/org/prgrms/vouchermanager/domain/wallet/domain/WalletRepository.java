@@ -8,11 +8,17 @@ public interface WalletRepository {
 
     void insert(Wallet wallet);
 
+    Optional<Wallet> findById(UUID id);
+
     List<Wallet> findByCustomerId(UUID customerId);
 
-    Optional<Wallet> findByVoucherId(UUID voucherId);
+    List<Wallet> findByVoucherId(UUID voucherId);
+
+    Optional<Wallet> findByCustomerIdAndVoucherId(UUID customerId, UUID voucherId);
 
     void delete(Wallet wallet);
 
     void deleteByVoucherId(UUID voucherId);
+
+    void update(Wallet wallet);
 }
