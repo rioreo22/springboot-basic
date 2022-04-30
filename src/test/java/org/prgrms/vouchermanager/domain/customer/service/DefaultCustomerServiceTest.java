@@ -26,7 +26,7 @@ class DefaultCustomerServiceTest {
     private CustomerRepository customerRepository;
 
     @Autowired
-    private CustomerService customerService;
+    private DefaultCustomerService customerService;
 
     @BeforeEach
     void beforeEach() {
